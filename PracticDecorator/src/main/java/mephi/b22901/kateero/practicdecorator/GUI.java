@@ -1,50 +1,57 @@
 package mephi.b22901.kateero.practicdecorator;
+
 import javax.swing.*;
 import java.awt.*;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
-
-
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class GUI {
 
-public void run(){
+    private int selectedCount = 0; // Счетчик выбранных чекбоксов
+
+    public void run() {
         // Создание нового окна
         JFrame frame = new JFrame("Приём заказа");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
-        frame.setLayout(new GridLayout(5,1));
+        frame.setLayout(new GridLayout(5, 1));
 
-        // Создание чекбоксов
         JCheckBox checkBox1 = new JCheckBox("Огненный соус");
         JCheckBox checkBox2 = new JCheckBox("Двойная порция оленины");
         JCheckBox checkBox3 = new JCheckBox("Снежные ягоды");
         JCheckBox checkBox4 = new JCheckBox("Нордская лепешка");
 
-      
         JButton button = new JButton("Заказать");
-        
-//        button.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                
-//                StringBuilder selectedOptions = new StringBuilder("Выберите добавки: ");
-//                
-//                if (checkBox1.isSelected()) selectedOptions.append("Огненный соус");
-//                if (checkBox2.isSelected()) selectedOptions.append("Двойная порция оленины");
-//                if (checkBox3.isSelected()) selectedOptions.append("Снежные ягоды");
-//                if (checkBox4.isSelected()) selectedOptions.append("Нордская лепешка");
-//                
-//            }
-//        });
-
-        frame.add(button);
  
+        ItemListener itemListener = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                JCheckBox source = (JCheckBox) e.getSource();
+                if (e.getStateChange() == ItemEvent.SELECTED) {
+                    if (selectedCount == 3) {
+                        source.setSelected(false);
+                        JOptionPane.showMessageDialog(frame, "Вы можете выбрать не более трех опций.", "Предупреждение", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        selectedCount++;
+                    }
+                } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                    selectedCount--;
+                }
+            }
+        };
+
+        checkBox1.addItemListener(itemListener);
+        checkBox2.addItemListener(itemListener);
+        checkBox3.addItemListener(itemListener);
+        checkBox4.addItemListener(itemListener);
+
+        
         frame.add(checkBox1);
         frame.add(checkBox2);
         frame.add(checkBox3);
         frame.add(checkBox4);
+        frame.add(button);
 
         frame.setVisible(true);
     }
-
 }
