@@ -7,5 +7,7 @@ public class PracticDecorator {
         stew = new AddFireSouce(stew);
         stew = new AddSnowBerries(stew);
         System.out.println(stew.getPrice());
+        GUI gui = new GUI();
+        gui.run();
     }
 }
